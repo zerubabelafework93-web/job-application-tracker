@@ -1,0 +1,304 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #EEF1EF;
+    --paper: #F8F9F7;
+    --ink: #171C19;
+    --ink-soft: #55605A;
+    --line: #D3D8D2;
+    --gold: #A8791B;
+    --sage: #4E6459;
+    --applied: #55605A;
+    --interview: #A8791B;
+    --offer: #3E7A5B;
+    --rejected: #9A4B3E;
+  }
+
+  .jt-root{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    padding: 40px 24px 64px;
+    min-height: 100%;
+    box-sizing: border-box;
+  }
+  .jt-root *{ box-sizing: border-box; }
+
+  .jt-wrap{ max-width: 720px; margin: 0 auto; }
+
+  .jt-tally{ display:flex; align-items:baseline; gap:14px; margin-bottom: 6px; }
+  .jt-tally-num{
+    font-family: 'Newsreader', serif;
+    font-size: 64px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .jt-tally-label{
+    font-size: 15px;
+    color: var(--ink-soft);
+    max-width: 220px;
+    line-height: 1.3;
+  }
+  .jt-sub{ font-size: 13px; color: var(--ink-soft); margin: 10px 0 28px; }
+
+  .jt-form{
+    display:flex; gap:8px; margin-bottom: 36px;
+  }
+  .jt-form input[type=text]{
+    flex: 1;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .jt-form input[type=text]:focus{ outline: 2px solid var(--gold); outline-offset: 1px; }
+  .jt-form button{
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 3px;
+    padding: 0 22px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .jt-form button:hover{ background: var(--sage); }
+  .jt-form button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  .jt-detail-row{ display:flex; gap:8px; margin: -26px 0 30px; }
+  .jt-detail-row input{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    padding: 4px 2px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  .jt-detail-row input:focus{ outline: none; border-bottom-color: var(--gold); }
+  .jt-detail-row input:nth-child(1){ flex: 1; }
+  .jt-detail-row input:nth-child(2){ flex: 1; }
+
+  .jt-list-head{
+    display:grid;
+    grid-template-columns: 1.4fr 1.4fr 1fr 0.8fr 28px;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding: 0 4px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .jt-row{
+    display:grid;
+    grid-template-columns: 1.4fr 1.4fr 1fr 0.8fr 28px;
+    gap: 10px;
+    align-items: center;
+    padding: 13px 4px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .jt-row a{ color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .jt-row a:hover{ border-bottom-color: var(--ink); }
+  .jt-company{ font-weight: 500; }
+  .jt-role{ color: var(--ink-soft); }
+  .jt-date{ color: var(--ink-soft); font-size: 13px; }
+
+  .jt-status{
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 5px 6px;
+    background: var(--paper);
+  }
+  .jt-status.st-applied{ color: var(--applied); }
+  .jt-status.st-interview{ color: var(--interview); }
+  .jt-status.st-offer{ color: var(--offer); }
+  .jt-status.st-rejected{ color: var(--rejected); }
+
+  .jt-del{
+    background: none; border: none; color: var(--ink-soft); cursor: pointer;
+    font-size: 16px; line-height: 1; padding: 4px;
+  }
+  .jt-del:hover{ color: var(--rejected); }
+
+  .jt-empty{
+    padding: 40px 4px; color: var(--ink-soft); font-size: 14px; text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (max-width: 480px){
+    .jt-list-head{ display:none; }
+    .jt-row{
+      grid-template-columns: 1fr;
+      gap: 4px;
+      position: relative;
+      padding: 14px 28px 14px 4px;
+    }
+    .jt-row .jt-status{ justify-self: start; margin-top: 4px; }
+    .jt-del{ position:absolute; top: 12px; right: 0; }
+  }
+</style>
+
+<div class="jt-root">
+  <div class="jt-wrap">
+    <div class="jt-tally">
+      <div class="jt-tally-num" id="jt-count">0</div>
+      <div class="jt-tally-label">applications logged so far</div>
+    </div>
+    <div class="jt-sub" id="jt-status-line">Loading your log…</div>
+
+    <form class="jt-form" id="jt-form">
+      <input type="text" id="jt-url" placeholder="Paste the job posting link" autocomplete="off" required>
+      <button type="submit">Log it</button>
+    </form>
+    <div class="jt-detail-row">
+      <input type="text" id="jt-company" placeholder="Company (optional)">
+      <input type="text" id="jt-role" placeholder="Role (optional)">
+    </div>
+
+    <div class="jt-list-head">
+      <div>Company</div><div>Role</div><div>Status</div><div>Date</div><div></div>
+    </div>
+    <div id="jt-list"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const KEY = 'applications';
+  const SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwtOUO2iJ2jNn_ZdruD1H2BKG_w9c07ervpkv2cpjcjcHyhmkd5atuDldgnjs1FMtb4sQ/exec';
+  let entries = [];
+
+  function sendToSheet(entry){
+    if(!SHEET_WEBHOOK_URL) return;
+    fetch(SHEET_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(entry)
+    }).catch(err => console.error('Sheet sync failed', err));
+  }
+
+  const listEl = document.getElementById('jt-list');
+  const countEl = document.getElementById('jt-count');
+  const statusLine = document.getElementById('jt-status-line');
+  const form = document.getElementById('jt-form');
+  const urlInput = document.getElementById('jt-url');
+  const companyInput = document.getElementById('jt-company');
+  const roleInput = document.getElementById('jt-role');
+
+  function hostFromUrl(u){
+    try { return new URL(u).hostname.replace('www.',''); } catch(e){ return u; }
+  }
+
+  function fmtDate(iso){
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined, { month:'short', day:'numeric' });
+  }
+
+  function render(){
+    countEl.textContent = entries.length;
+    listEl.innerHTML = '';
+    if(entries.length === 0){
+      listEl.innerHTML = '<div class="jt-empty">Nothing logged yet — paste a job link above to start.</div>';
+      return;
+    }
+    const sorted = [...entries].sort((a,b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+    for(const e of sorted){
+      const row = document.createElement('div');
+      row.className = 'jt-row';
+      const companyLabel = e.company || hostFromUrl(e.url);
+      row.innerHTML = `
+        <div class="jt-company"><a href="${e.url}" target="_blank" rel="noopener">${escapeHtml(companyLabel)}</a></div>
+        <div class="jt-role">${escapeHtml(e.role || '—')}</div>
+        <select class="jt-status st-${e.status}" data-id="${e.id}">
+          <option value="applied" ${e.status==='applied'?'selected':''}>Applied</option>
+          <option value="interview" ${e.status==='interview'?'selected':''}>Interview</option>
+          <option value="offer" ${e.status==='offer'?'selected':''}>Offer</option>
+          <option value="rejected" ${e.status==='rejected'?'selected':''}>Rejected</option>
+        </select>
+        <div class="jt-date">${fmtDate(e.dateAdded)}</div>
+        <button class="jt-del" data-id="${e.id}" title="Remove">×</button>
+      `;
+      listEl.appendChild(row);
+    }
+
+    listEl.querySelectorAll('.jt-status').forEach(sel => {
+      sel.addEventListener('change', async (ev) => {
+        const id = ev.target.getAttribute('data-id');
+        const entry = entries.find(x => x.id === id);
+        if(entry){
+          entry.status = ev.target.value;
+          ev.target.className = 'jt-status st-' + entry.status;
+          await save();
+        }
+      });
+    });
+    listEl.querySelectorAll('.jt-del').forEach(btn => {
+      btn.addEventListener('click', async (ev) => {
+        const id = ev.target.getAttribute('data-id');
+        entries = entries.filter(x => x.id !== id);
+        await save();
+        render();
+      });
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function save(){
+    try{
+      localStorage.setItem(KEY, JSON.stringify(entries));
+      statusLine.textContent = entries.length + ' total — saved to your log';
+    }catch(err){
+      console.error('Save failed', err);
+      statusLine.textContent = 'Could not save — your entries may not persist.';
+    }
+  }
+
+  async function load(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      entries = raw ? JSON.parse(raw) : [];
+    }catch(err){
+      entries = [];
+    }
+    statusLine.textContent = entries.length + ' total — saved to your log';
+    render();
+  }
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const url = urlInput.value.trim();
+    if(!url) return;
+    const newEntry = {
+      id: 'app_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+      url,
+      company: companyInput.value.trim(),
+      role: roleInput.value.trim(),
+      status: 'applied',
+      dateAdded: new Date().toISOString()
+    };
+    entries.push(newEntry);
+    urlInput.value = '';
+    companyInput.value = '';
+    roleInput.value = '';
+    sendToSheet(newEntry);
+    await save();
+    render();
+    urlInput.focus();
+  });
+
+  load();
+})();
+</script>
